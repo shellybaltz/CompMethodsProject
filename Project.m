@@ -7,4 +7,5 @@ clc
 filefolder = fullfile(pwd, '/Volumes/ShellsSSD/CompMethodsProject');
 collection = dicomCollection(fullfile(filefolder, 'dicomimages'));
 
+%%YUHHHHHH
 
