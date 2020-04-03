@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 % Comp Methods Project 
 
 %% 
@@ -62,3 +63,16 @@ subplot(2,2,4)
 j_4 = imadjustn(mri4);
 imshow(j_4, [])
 title('MRI Image 2 - Thresholding')
+=======
+clear all
+clc
+
+% info = dicominfo('IM-0001-0001.dcm');
+% I = dicomread(info);
+% imshow(I,'DisplayRange',[])
+filefolder = fullfile(pwd,'C:\Users\eipet\OneDrive\Documents\GitHub\CompMethodsProject');
+collection = dicomCollection(fullfile(filefolder, 'dicomimages'));
+
+%% Thresholing
+
+>>>>>>> Stashed changes
