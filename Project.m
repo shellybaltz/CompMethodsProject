@@ -1,10 +1,17 @@
-clear all
-clc
+% Comp Methods Project 
 
-% info = dicominfo('IM-0001-0001.dcm');
-% I = dicomread(info);
-% imshow(I,'DisplayRange',[])
-filefolder = fullfile(pwd, '/Volumes/ShellsSSD/CompMethodsProject');
-collection = dicomCollection(fullfile(filefolder, 'dicomimages'));
+%% Loading Data into Matlab
+clear, clc
+
+% stores information about the MRI images into a structure
+info1 = dicominfo('IM-0001-0001.dcm');
+info2 = dicominfo('IM-0001-0002.dcm');
+info3 = dicominfo('IM-0001-0003.dcm');
+info4 = dicominfo('IM-0001-0004.dcm');
+
+mri1 = dicomread(info1);
+mri2 = dicomread(info2);
+mri3 = dicomread(info3);
+mri4 = dicomread(info4);
 
 
