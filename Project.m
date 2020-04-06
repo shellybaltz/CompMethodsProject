@@ -40,7 +40,7 @@ title('MRI Image 3')
 subplot(2,2,4)
 imshow(mri4,[])
 title('MRI Image 4')
-%% Thresholding
+%% Thresholding and Selecting ROI
 
 figure
 subplot(2,2,1)
@@ -48,17 +48,39 @@ j_1 = imadjustn(mri1);
 imshow(j_1, [])
 title('MRI Image 1 - Thresholding')
 
+ROI_1 = drawfreehand
+bw = createMask(ROI_1);
+imshow(bw)
+
+
 subplot(2,2,2)
 j_2 = imadjustn(mri2);
 imshow(j_2, [])
 title('MRI Image 2 - Thresholding')
+
+ROI_2 = drawfreehand
+bw2 = createMask(ROI_2);
+imshow(bw2)
 
 subplot(2,2,3)
 j_3 = imadjustn(mri3);
 imshow(j_3, [])
 title('MRI Image 2 - Thresholding')
 
+ROI_3 = drawfreehand
+bw3 = createMask(ROI_3);
+imshow(bw3)
+
 subplot(2,2,4)
 j_4 = imadjustn(mri4);
 imshow(j_4, [])
 title('MRI Image 2 - Thresholding')
+
+ROI_4 = drawfreehand
+bw4 = createMask(ROI_4);
+imshow(bw4)
+
+%%
+
+
+
