@@ -81,8 +81,13 @@ bw4 = createMask(ROI_4);
 imshow(bw4)
 
 %% Finding area
-Area1 = regionprops(bw,'area')
-Area2 = regionprops(bw2,'area')
-Area3 = regionprops(bw3,'area')
-Area4 = regionprops(bw4,'area')
-
+Area1 = nnz(bw)
+Area2 = nnz(bw2)
+Area3 = nnz(bw3)
+Area4 = nnz(bw4)
+spacing = info1.PixelSpacing % The pixel spacing is equal for all of the dicom images, so we can probably just use one variable
+pixelarea = spacing(1)*spacing(2)
+Areamm1 = Area1*pixelarea
+Areamm2 = Area2*pixelarea
+Areamm3 = Area3*pixelarea
+Areamm4 = Area4*pixelarea

@@ -40,7 +40,7 @@ title('MRI Image 3')
 subplot(2,2,4)
 imshow(mri4,[])
 title('MRI Image 4')
-%% Thresholding
+%% Thresholding and Selecting ROI
 
 figure
 subplot(2,2,1)
@@ -59,8 +59,8 @@ imshow(j_2, [])
 title('MRI Image 2 - Thresholding')
 
 ROI_2 = drawfreehand
-bw = createMask(ROI_2);
-imshow(bw)
+bw2 = createMask(ROI_2);
+imshow(bw2)
 
 subplot(2,2,3)
 j_3 = imadjustn(mri3);
@@ -68,8 +68,8 @@ imshow(j_3, [])
 title('MRI Image 2 - Thresholding')
 
 ROI_3 = drawfreehand
-bw = createMask(ROI_3);
-imshow(bw)
+bw3 = createMask(ROI_3);
+imshow(bw3)
 
 subplot(2,2,4)
 j_4 = imadjustn(mri4);
@@ -77,10 +77,14 @@ imshow(j_4, [])
 title('MRI Image 2 - Thresholding')
 
 ROI_4 = drawfreehand
-bw = createMask(ROI_4);
-imshow(bw)
+bw4 = createMask(ROI_4);
+imshow(bw4)
 
-%%
-
-
-
+%% Finding area
+Area1 = nnz(bw)
+Area2 = nnz(bw)
+Area3 = nnz(bw)
+Area4 = nnz(bw4)
+spacing = info1.PixelSpacing % The pixel spacing is equal for all of the dicom images, so we can probably just use one variable
+pixelarea = spacing(1)*spacing(2)
+Areamm1 = Area1*pixelarea
