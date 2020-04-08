@@ -11,7 +11,7 @@ else
 end
 
 %% Loading Data into Matlab
-clear, clc
+clear, clc, close all
 
 % stores information about the MRI images into a structure
 info1 = dicominfo('IM-0001-0001.dcm');
@@ -24,22 +24,30 @@ mri2 = dicomread(info2);
 mri3 = dicomread(info3);
 mri4 = dicomread(info4);
 
+% figure
+% subplot(2,2,1)
+% imshow(mri1,[])
+% title('MRI Image 1')
+% 
+% subplot(2,2,2)
+% imshow(mri2,[])
+% title('MRI Image 2')
+% 
+% subplot(2,2,3)
+% imshow(mri3,[])
+% title('MRI Image 3')
+% 
+% subplot(2,2,4)
+% imshow(mri4,[])
+% title('MRI Image 4')
+
+
 figure
-subplot(2,2,1)
-imshow(mri1,[])
-title('MRI Image 1')
+Matrix = cat(3, mri1, mri2, mri3, mri4);
+s = smooth3(Matrix);
+fv = patch(isosurface(s, 'isovalue'))
 
-subplot(2,2,2)
-imshow(mri2,[])
-title('MRI Image 2')
 
-subplot(2,2,3)
-imshow(mri3,[])
-title('MRI Image 3')
-
-subplot(2,2,4)
-imshow(mri4,[])
-title('MRI Image 4')
 %% Thresholding and Selecting ROI
 
 figure
