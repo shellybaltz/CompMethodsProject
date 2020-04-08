@@ -80,7 +80,9 @@ ROI_4 = drawfreehand
 bw4 = createMask(ROI_4);
 imshow(bw4)
 
-%%
-
-
+%% Finding area
+Area1 = regionprops(bw,'area')
+Area2 = regionprops(bw2,'area')
+Area3 = regionprops(bw3,'area')
+Area4 = regionprops(bw4,'area')
 
