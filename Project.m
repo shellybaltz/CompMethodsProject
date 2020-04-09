@@ -51,7 +51,15 @@ title('MRI Image 1 - Thresholding')
 
 ROI_1 = drawfreehand
 bw = createMask(ROI_1);
-imshow(bw)
+
+OGimage = j_1;
+OGimage(bw) = 255;
+MaskedIm = j_1;
+MaskedIm(~bw) = 0;
+imshow(MaskedIm)
+
+
+
 
 %% Finding area
 Area1 = nnz(bw)
