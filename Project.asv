@@ -48,24 +48,29 @@ j_1 = imadjustn(mri1);
 imshow(j_1, [])
 title('MRI Image 1 - Thresholding')
 
+j_2 = imadjustn(mri2);
+j_3 = imadjustn(mri3);
+j_4 = imadjustn(mri4);
 
 ROI_1 = drawfreehand
 bw = createMask(ROI_1);
-% structBoundaries = bwboundaries(bw);
-% xy = structBoundaries{1};
-% x = xy(:,2);
-% y = xy(:,1);
+
 OGimage = j_1;
 OGimage(bw) = 255;
 MaskedIm = j_1;
 MaskedIm(~bw) = 0;
 imshow(MaskedIm)
 
+xy = structBoundaries{1};
+x = xy(:,2);
+y = xy(:,1);
+imshow(j
+plot(x,y); 
+drawnow;
 
 
-%% 
-bw = createMask(ROI_1);
-imshow(bw)
+
+
 
 %% Finding area
 Area1 = nnz(bw)

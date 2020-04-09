@@ -48,6 +48,9 @@ j_1 = imadjustn(mri1);
 imshow(j_1, [])
 title('MRI Image 1 - Thresholding')
 
+j_2 = imadjustn(mri2);
+j_3 = imadjustn(mri3);
+j_4 = imadjustn(mri4);
 
 ROI_1 = drawfreehand
 bw = createMask(ROI_1);
@@ -56,8 +59,31 @@ OGimage = j_1;
 OGimage(bw) = 255;
 MaskedIm = j_1;
 MaskedIm(~bw) = 0;
+subplot(2,2,1)
 imshow(MaskedIm)
 
+structBoundaries = bwboundaries(bw);
+xy = structBoundaries{1};
+x = xy(:,2);
+y = xy(:,1);
+
+subplot(2,2,2)
+imshow(j_2)
+hold on
+plot(x,y,'LineWidth',2); 
+drawnow;
+
+subplot(2,2,3)
+imshow(j_3)
+hold on
+plot(x,y,'LineWidth',2); 
+drawnow;
+
+subplot(2,2,4)
+imshow(j_4)
+hold on
+plot(x,y,'LineWidth',2); 
+drawnow;
 
 
 
