@@ -72,7 +72,6 @@ x = xy(:,2);
 y = xy(:,1);
 
 
-
 subplot(2,2,2)
 OGimage2 = j_2;%setting OGimage to first mri image
 OGimage2(bw) = 255; %sets masked ROI section above to original mri thresholded image
@@ -116,6 +115,40 @@ for k = 1:512;
         end
     end
 end
+
+ab2 = zeros(368,512); %initializing vector
+for k = 1:512;
+    for j = 1:368;
+        if MaskedIm2(j,k) > 60000; %finds when image is greater than 60,000 (ablation pixel values)
+            ab2(j,k) = MaskedIm2(j,k); %sets it equal to value if greater than
+        else
+            ab2(j,k) = 0; %everything but ablation pixels = 0
+        end
+    end
+end
+
+ab3 = zeros(368,512); %initializing vector
+for k = 1:512;
+    for j = 1:368;
+        if MaskedIm3(j,k) > 60000; %finds when image is greater than 60,000 (ablation pixel values)
+            ab3(j,k) = MaskedIm1(j,k); %sets vector equal to ablation pixel value
+        else
+            ab3(j,k) = 0; %everything but ablation pixels = 0
+        end
+    end
+end
+
+ab4 = zeros(368,512); %initializing vector
+for k = 1:512;
+    for j = 1:368;
+        if MaskedIm4(j,k) > 60000; %finds when image is greater than 60,000 (ablation pixel values)
+            ab4(j,k) = MaskedIm1(j,k); %sets vector equal to ablation pixel value
+        else
+            ab4(j,k) = 0; %everything but ablation pixels = 0
+        end
+    end
+end
+
 
 ab2 = zeros(368,512); %initializing vector
 for k = 1:512;
