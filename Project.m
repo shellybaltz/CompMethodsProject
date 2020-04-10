@@ -202,10 +202,10 @@ imshow(ab4)
 title('Ablation in MRI Image 4')
 
 %% Finding area
-Area1 = nnz(bw)
-Area2 = nnz(bw2)
-Area3 = nnz(bw3)
-Area4 = nnz(bw4)
+Area1 = nnz(ab1)
+Area2 = nnz(ab2)
+Area3 = nnz(ab3)
+Area4 = nnz(ab4)
 spacing = info1.PixelSpacing % The pixel spacing is equal for all of the dicom images, so we can probably just use one variable
 pixelarea = spacing(1)*spacing(2)
 Areamm1 = Area1*pixelarea
