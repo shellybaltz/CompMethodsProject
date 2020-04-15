@@ -18,6 +18,7 @@ info2 = dicominfo('IM-0001-0002.dcm');
 info3 = dicominfo('IM-0001-0003.dcm');
 info4 = dicominfo('IM-0001-0004.dcm');
 
+
 %Reads MRI Images
 mri1 = dicomread(info1);
 mri2 = dicomread(info2);
@@ -51,8 +52,18 @@ imshow(j_1, [])
 title('MRI Image 1')
 
 j_2 = imadjustn(mri2); %thresholds original mri image #1
-j_3 = imadjustn(mri3); %thresholds original mri image #1
-j_4 = imadjustn(mri4); %thresholds original mri image #1
+j_3 = imadjustn(mri3); %thresholds original mri image #2
+j_4 = imadjustn(mri4); %thresholds original mri image #3
+
+a = char('This thresholding is for viewing purposes.');
+b = char('The function imadjustn was used.');
+c = char('This function increases contrast of the image by saturating the');
+d = char('botton and top 1 percent of all pixel values');
+
+disp(a)
+disp(b)
+disp(c)
+disp(d)
 
 ROI_1 = drawfreehand %draws region of interes (user input)
 bw = createMask(ROI_1); %bionary mask image with pixels insie ROI, supressed
@@ -105,6 +116,7 @@ plot(x,y);
 drawnow; %updates figures and processes pending callbacks
 title('Ablation Area in MRI Image 4')
 
+%adjust pixel number to be user input/slider
 ab1 = zeros(368,512); %initializing vector
 for k = 1:512;
     for j = 1:368;
