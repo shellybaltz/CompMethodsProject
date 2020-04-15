@@ -202,23 +202,23 @@ imshow(ab4)
 title('Ablation in MRI Image 4')
 
 %% Finding area
-Area1 = nnz(ab1) % Counts all of the nonzero elements, aka white pixels, present in the masked images
-Area2 = nnz(ab2)
-Area3 = nnz(ab3)
-Area4 = nnz(ab4)
-spacing = info1.PixelSpacing % The pixel spacing is equal for all of the dicom images, so we can probably just use one variable
-pixelarea = spacing(1)*spacing(2)
-Areamm1 = Area1*pixelarea
-Areamm2 = Area2*pixelarea
-Areamm3 = Area3*pixelarea
-Areamm4 = Area4*pixelarea
+Area1 = nnz(ab1); % Counts all of the nonzero elements, aka white pixels, present in the masked images
+Area2 = nnz(ab2);
+Area3 = nnz(ab3);
+Area4 = nnz(ab4);
+spacing = info1.PixelSpacing; % The pixel spacing is equal for all of the dicom images, so we can probably just use one variable
+pixelarea = spacing(1)*spacing(2);
+Areamm1 = Area1*pixelarea;
+Areamm2 = Area2*pixelarea;
+Areamm3 = Area3*pixelarea;
+Areamm4 = Area4*pixelarea;
 
 %% Volume Calculation
-thickness = info1.SliceThickness % Thickness of each slice in mm
-Volume1 = Areamm1*thickness % Calculates the volume of each slice by multiplying with the slice thickness
-Volume2 = Areamm2*thickness
-Volume3 = Areamm3*thickness
-Volume4 = Areamm4*thickness
+thickness = info1.SliceThickness; % Thickness of each slice in mm
+Volume1 = Areamm1*thickness; % Calculates the volume of each slice by multiplying with the slice thickness
+Volume2 = Areamm2*thickness;
+Volume3 = Areamm3*thickness;
+Volume4 = Areamm4*thickness;
 TotalVolume = Volume1+Volume2+Volume3+Volume4 % The sum of each slice will result in the final volume
 
 
