@@ -22,7 +22,11 @@ function varargout = GUImrivolume(varargin)
 
 % Edit the above text to modify the response to help GUImrivolume
 
+<<<<<<< HEAD
+% Last Modified by GUIDE v2.5 16-Apr-2020 20:15:17
+=======
 % Last Modified by GUIDE v2.5 14-Apr-2020 22:39:31
+>>>>>>> b7d3b146bf9cb53141def1baef2a1d54194c1ef3
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -81,6 +85,8 @@ function MRIdisplay_WindowButtonDownFcn(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 
+<<<<<<< HEAD
+=======
 % --- Executes on slider movement.
 function slider1_Callback(hObject, eventdata, handles)
 % hObject    handle to slider1 (see GCBO)
@@ -103,6 +109,7 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
 end
 
 
+>>>>>>> b7d3b146bf9cb53141def1baef2a1d54194c1ef3
 % --- Executes on button press in toolboxcheck_pushbutton.
 function toolboxcheck_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to toolboxcheck_pushbutton (see GCBO)
@@ -120,6 +127,20 @@ function LoadData_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to LoadData_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+<<<<<<< HEAD
+
+
+[filename,filepath] = uigetfile('*.dcm', 'Select all the MRI images to be analyzed','Multiselect', 'on');
+N = length(filename);
+set(handles.listbox1,'String',filename);
+for i = 1:N
+    mri(i).info = dicominfo(filename{i});
+    mri(i).images = dicomread(mri(i).info);
+end
+handles.mri = mri;
+guidata(hObject,handles)
+
+=======
 info1 = dicominfo('IM-0001-0001.dcm');
 info2 = dicominfo('IM-0001-0002.dcm');
 info3 = dicominfo('IM-0001-0003.dcm');
@@ -132,6 +153,7 @@ mri4 = dicomread(info4);
 
 axes(handles.axes1)
 imagesc(mri1);
+>>>>>>> b7d3b146bf9cb53141def1baef2a1d54194c1ef3
 
 % --- Executes on button press in Threshold_pushbutton.
 function Threshold_pushbutton_Callback(hObject, eventdata, handles)
@@ -159,3 +181,79 @@ function ROIthreshold_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to ROIthreshold_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+<<<<<<< HEAD
+
+
+
+function toolboxcheck_textbox_Callback(hObject, eventdata, handles)
+% hObject    handle to toolboxcheck_textbox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of toolboxcheck_textbox as text
+%        str2double(get(hObject,'String')) returns contents of toolboxcheck_textbox as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function toolboxcheck_textbox_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to toolboxcheck_textbox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in listbox1.
+function listbox1_Callback(hObject, eventdata, handles)
+% hObject    handle to listbox1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns listbox1 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from listbox1
+
+index = get(handles.listbox1,'value');
+axes(handles.axes1)
+imshow(handles.mri(index).images,[]);
+
+
+% --- Executes during object creation, after setting all properties.
+function listbox1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to listbox1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: listbox controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+return
+
+
+% --- Executes on slider movement.
+function threshold_slider_Callback(hObject, eventdata, handles)
+% hObject    handle to threshold_slider (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'Value') returns position of slider
+%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+
+
+% --- Executes during object creation, after setting all properties.
+function threshold_slider_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to threshold_slider (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: slider controls usually have a light gray background.
+if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor',[.9 .9 .9]);
+end
+=======
+>>>>>>> b7d3b146bf9cb53141def1baef2a1d54194c1ef3
