@@ -120,10 +120,10 @@ function LoadData_pushbutton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-
 [filename,filepath] = uigetfile('*.dcm', 'Select all the MRI images to be analyzed','Multiselect', 'on');
 N = length(filename);
 set(handles.listbox1,'String',filename);
+set(handles.listbox2,'String',filename);
 for i = 1:N
     mri(i).info = dicominfo(filename{i});
     mri(i).images = dicomread(mri(i).info);
@@ -132,11 +132,23 @@ handles.mri = mri;
 guidata(hObject,handles)
 
 
-% --- Executes on button press in Threshold_pushbutton.
-function Threshold_pushbutton_Callback(hObject, eventdata, handles)
-% hObject    handle to Threshold_pushbutton (see GCBO)
+% --- Executes on button press in Contrast_pushbutton.
+function Contrast_pushbutton_Callback(hObject, eventdata, handles)
+% hObject    handle to Contrast_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+mri = handles.mri;
+for k = 1:length(mri)
+    Con(k).Contrast= imadjustn(mri(k).images);
+end
+
+handles.Con = Con;
+index = get(handles.listbox2,'value');   
+axes(handles.axes2)
+
+imshow(handles.Con(index).Contrast,[]);
+guidata(hObject,handles)
 
 
 % --- Executes on button press in ROI_pushbutton.
@@ -232,3 +244,51 @@ if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColo
     set(hObject,'BackgroundColor',[.9 .9 .9]);
 end
 
+
+
+function Contrast_Message_Callback(hObject, eventdata, handles)
+% hObject    handle to Contrast_Message (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of Contrast_Message as text
+%        str2double(get(hObject,'String')) returns contents of Contrast_Message as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function Contrast_Message_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to Contrast_Message (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes on selection change in listbox2.
+function listbox2_Callback(hObject, eventdata, handles)
+% hObject    handle to listbox2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns listbox2 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from listbox2
+index = get(handles.listbox2,'value');
+axes(handles.axes2)
+imshow(handles.Con(index).Contrast,[]);
+
+
+% --- Executes during object creation, after setting all properties.
+function listbox2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to listbox2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: listbox controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
