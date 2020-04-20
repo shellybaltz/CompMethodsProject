@@ -156,6 +156,16 @@ function ROI_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to ROI_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+imshow(handles.Con(1).Contrast,[]);
+ROI = drawfreehand;
+bw = createMask(ROI);
+OGimage1 = handles.Con(1).Contrast,[];%setting OGimage to first mri image
+OGimage1(bw) = 255; %sets masked ROI section above to original mri thresholded image
+MaskedIm1 = handles.Con(1).Contrast,[];
+MaskedIm1(~bw) = 0; %everywhere not masked is set to black
+imshow(MaskedIm1); %shows RIO
+
+
 
 
 % --- Executes on button press in Volume_pushbutton.
