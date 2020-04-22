@@ -124,7 +124,6 @@ function LoadData_pushbutton_Callback(hObject, eventdata, handles)
 if ~iscell(filename)
     filename = {filename};
 end 
-
 N = length(filename)
 set(handles.listbox1,'String',filename);
 set(handles.listbox2,'String',filename);
@@ -135,10 +134,9 @@ for i = 1:N
 end
 
 handles.mri = mri;
-
-axes(handles.axes1)
 imshow(handles.mri(1).images,[]);
 guidata(hObject,handles)
+
 
 % --- Executes on button press in Contrast_pushbutton.
 function Contrast_pushbutton_Callback(hObject, eventdata, handles)
