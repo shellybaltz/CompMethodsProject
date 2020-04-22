@@ -78,30 +78,6 @@ function MRIdisplay_WindowButtonDownFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-
-
-% --- Executes on slider movement.
-function slider1_Callback(hObject, eventdata, handles)
-% hObject    handle to slider1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-
-
-% --- Executes during object creation, after setting all properties.
-function slider1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to slider1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: slider controls usually have a light gray background.
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
-
-
 % --- Executes on button press in toolboxcheck_pushbutton.
 function toolboxcheck_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to toolboxcheck_pushbutton (see GCBO)
@@ -328,6 +304,29 @@ function listbox3_CreateFcn(hObject, eventdata, handles)
 % handles    empty - handles not created until after all CreateFcns called
 
 % Hint: listbox controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function volume_text_Callback(hObject, eventdata, handles)
+% hObject    handle to volume_text (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of volume_text as text
+%        str2double(get(hObject,'String')) returns contents of volume_text as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function volume_text_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to volume_text (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
