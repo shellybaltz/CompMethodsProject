@@ -104,7 +104,7 @@ end
 N = length(filename);
 set(handles.listbox1,'String',filename);
 set(handles.listbox2,'String',filename);
-
+set(handles.listbox3,'String',filename);
 for i = 1:N
     mri(i).info = dicominfo(filename{i});
     mri(i).images = dicomread(mri(i).info);
@@ -143,11 +143,27 @@ function ROI_pushbutton_Callback(hObject, eventdata, handles)
 imshow(handles.Con(1).Contrast,[]);
 ROI = drawfreehand;
 bw = createMask(ROI);
-OGimage1 = handles.Con(1).Contrast,[];%setting OGimage to first mri image
-OGimage1(bw) = 255; %sets masked ROI section above to original mri thresholded image
-MaskedIm1 = handles.Con(1).Contrast,[];
-MaskedIm1(~bw) = 0; %everywhere not masked is set to black
-imshow(MaskedIm1); %shows RIO
+% OGimage1 = handles.Con(1).Contrast;%setting OGimage to first mri image
+% OGimage1(bw) = 255; %sets masked ROI section above to original mri thresholded image
+% MaskedIm1 = handles.Con(1).Contrast;
+% MaskedIm1(~bw) = 0; %everywhere not masked is set to black
+% imshow(MaskedIm1)
+mri = handles.mri;
+for k = 1:length(mri)
+    OGimage(k) = handles.Con(k).Contrast;
+    MaskedIm(k) = handles.Con(k).Contrast;
+     for l = 1:length(OGimage(k))
+        OGimage(bw) = 255;
+        MaskedIm(~bw) = 0;
+     end
+end
+
+handles.ROI = MaskedIm(k)
+index = get(handles.listbox3,'value');
+axes(handles.ROI)
+
+imshow(handles.ROI(index).images,[]);
+guidata(hObject,handles)
 
 
 
@@ -294,7 +310,7 @@ function listbox3_Callback(hObject, eventdata, handles)
 %        contents{get(hObject,'Value')} returns selected item from listbox3index = get(handles.listbox2,'value');
 index = get(handles.listbox3,'value');
 axes(handles.axes3)
-imshow(handles.mri(index).images,[]);
+imshow(handles.ROI(index),[]);
 
 
 % --- Executes during object creation, after setting all properties.
