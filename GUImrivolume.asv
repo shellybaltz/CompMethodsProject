@@ -165,6 +165,20 @@ MaskedIm1 = handles.Con(1).Contrast,[];
 MaskedIm1(~bw) = 0; %everywhere not masked is set to black
 imshow(MaskedIm1); %shows RIO
 
+mri = handles.mri;
+for k = 1:length(mri)
+    handles.Con(k).Contrast(bw) = 255;
+    handles.Con(k).Contrast(~bw) = 0;
+end
+
+index = get(handles.listbox3,'value');
+axes(handles.axes3)
+
+imshow(handles.Con(index).Contrast,[]);
+guidata(hObject,handles)
+    
+
+
 
 
 % --- Executes on button press in Volume_pushbutton.
