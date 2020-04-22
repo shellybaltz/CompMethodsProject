@@ -97,23 +97,25 @@ function LoadData_pushbutton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 [filename,filepath] = uigetfile('*.dcm', 'Select all the MRI images to be analyzed','Multiselect', 'on');
-if ~iscell(filename)
+
+if ~iscell(filename)    % checks if user only selected one file. If so, filename will be put in a cell.
     filename = {filename};
 end 
 
-N = length(filename);
-set(handles.listbox1,'String',filename);
+N = length(filename);   % Makes N the number of files the user selected
+set(handles.listbox1,'String',filename); 
 set(handles.listbox2,'String',filename);
 set(handles.listbox3,'String',filename);
-for i = 1:N
+
+for i = 1:N             % for loop to get the info of the images into a structure names mri
     mri(i).info = dicominfo(filename{i});
     mri(i).images = dicomread(mri(i).info);
 end
 
-handles.mri = mri;
+handles.mri = mri;      % defines the mri structure
 
 axes(handles.axes1)
-imshow(handles.mri(1).images,[]);
+imshow(handles.mri(1).images,[]);       % shows the first image in axis 1
 guidata(hObject,handles)
 
 % --- Executes on button press in Contrast_pushbutton.
@@ -124,11 +126,12 @@ function Contrast_pushbutton_Callback(hObject, eventdata, handles)
 
 mri = handles.mri;
 for k = 1:length(mri)
-    Con(k).Contrast= imadjustn(mri(k).images);
+    Con(k).Contrast = imadjustn(mri(k).images); 
 end
 
 handles.Con = Con;
 index = get(handles.listbox2,'value');   
+
 axes(handles.axes2)
 
 imshow(handles.Con(index).Contrast,[]);
@@ -213,7 +216,7 @@ function listbox1_Callback(hObject, eventdata, handles)
 % Hints: contents = cellstr(get(hObject,'String')) returns listbox1 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from listbox1
 
-index = get(handles.listbox1,'value');
+index = get(handles.listbox1,'value');  % gets the index of the image selected in the listbox
 axes(handles.axes1)
 imshow(handles.mri(index).images,[]);
 
@@ -308,6 +311,7 @@ function listbox3_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns listbox3 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from listbox3index = get(handles.listbox2,'value');
+
 index = get(handles.listbox3,'value');
 axes(handles.axes3)
 imshow(handles.ROI(index),[]);

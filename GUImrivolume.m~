@@ -78,30 +78,6 @@ function MRIdisplay_WindowButtonDownFcn(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-
-
-% --- Executes on slider movement.
-function slider1_Callback(hObject, eventdata, handles)
-% hObject    handle to slider1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'Value') returns position of slider
-%        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
-
-
-% --- Executes during object creation, after setting all properties.
-function slider1_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to slider1 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: slider controls usually have a light gray background.
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
-
-
 % --- Executes on button press in toolboxcheck_pushbutton.
 function toolboxcheck_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to toolboxcheck_pushbutton (see GCBO)
@@ -120,23 +96,26 @@ function LoadData_pushbutton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-[filename,filepath] = uigetfile('*.dcm', 'Select all the MRI images to be analyzed','Multiselect', 'on')
-if ~iscell(filename)
+[filename,filepath] = uigetfile('*.dcm', 'Select all the MRI images to be analyzed','Multiselect', 'on');
+
+if ~iscell(filename) % checks if user only selected one file. If so, filename will be put in a cell.
     filename = {filename};
 end 
-N = length(filename)
+
+N = length(filename); % checks
 set(handles.listbox1,'String',filename);
 set(handles.listbox2,'String',filename);
-
+set(handles.listbox3,'String',filename);
 for i = 1:N
     mri(i).info = dicominfo(filename{i});
     mri(i).images = dicomread(mri(i).info);
 end
 
 handles.mri = mri;
+
+axes(handles.axes1)
 imshow(handles.mri(1).images,[]);
 guidata(hObject,handles)
-
 
 % --- Executes on button press in Contrast_pushbutton.
 function Contrast_pushbutton_Callback(hObject, eventdata, handles)
@@ -146,11 +125,12 @@ function Contrast_pushbutton_Callback(hObject, eventdata, handles)
 
 mri = handles.mri;
 for k = 1:length(mri)
-    Con(k).Contrast= imadjustn(mri(k).images);
+    Con(k).Contrast = imadjustn(mri(k).images); 
 end
 
 handles.Con = Con;
 index = get(handles.listbox2,'value');   
+
 axes(handles.axes2)
 
 imshow(handles.Con(index).Contrast,[]);
@@ -165,11 +145,27 @@ function ROI_pushbutton_Callback(hObject, eventdata, handles)
 imshow(handles.Con(1).Contrast,[]);
 ROI = drawfreehand;
 bw = createMask(ROI);
-OGimage1 = handles.Con(1).Contrast,[];%setting OGimage to first mri image
-OGimage1(bw) = 255; %sets masked ROI section above to original mri thresholded image
-MaskedIm1 = handles.Con(1).Contrast,[];
-MaskedIm1(~bw) = 0; %everywhere not masked is set to black
-imshow(MaskedIm1); %shows RIO
+% OGimage1 = handles.Con(1).Contrast;%setting OGimage to first mri image
+% OGimage1(bw) = 255; %sets masked ROI section above to original mri thresholded image
+% MaskedIm1 = handles.Con(1).Contrast;
+% MaskedIm1(~bw) = 0; %everywhere not masked is set to black
+% imshow(MaskedIm1)
+mri = handles.mri;
+for k = 1:length(mri)
+    OGimage(k) = handles.Con(k).Contrast;
+    MaskedIm(k) = handles.Con(k).Contrast;
+     for l = 1:length(OGimage(k))
+        OGimage(bw) = 255;
+        MaskedIm(~bw) = 0;
+     end
+end
+
+handles.ROI = MaskedIm(k)
+index = get(handles.listbox3,'value');
+axes(handles.ROI)
+
+imshow(handles.ROI(index).images,[]);
+guidata(hObject,handles)
 
 
 
@@ -314,9 +310,10 @@ function listbox3_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns listbox3 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from listbox3index = get(handles.listbox2,'value');
+
 index = get(handles.listbox3,'value');
 axes(handles.axes3)
-imshow(handles.mri(index).images,[]);
+imshow(handles.ROI(index),[]);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -326,6 +323,29 @@ function listbox3_CreateFcn(hObject, eventdata, handles)
 % handles    empty - handles not created until after all CreateFcns called
 
 % Hint: listbox controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function volume_text_Callback(hObject, eventdata, handles)
+% hObject    handle to volume_text (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of volume_text as text
+%        str2double(get(hObject,'String')) returns contents of volume_text as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function volume_text_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to volume_text (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
 %       See ISPC and COMPUTER.
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
