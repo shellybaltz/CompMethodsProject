@@ -120,12 +120,12 @@ function LoadData_pushbutton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-[filename,filepath] = uigetfile('*.dcm', 'Select all the MRI images to be analyzed','Multiselect', 'on')
+[filename,filepath] = uigetfile('*.dcm', 'Select all the MRI images to be analyzed','Multiselect', 'on');
 if ~iscell(filename)
     filename = {filename};
 end 
 
-N = length(filename)
+N = length(filename);
 set(handles.listbox1,'String',filename);
 set(handles.listbox2,'String',filename);
 
