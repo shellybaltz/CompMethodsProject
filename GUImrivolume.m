@@ -85,9 +85,9 @@ function toolboxcheck_pushbutton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 test = license('test','image_toolbox');
 if test == 0
-    disp('To run this project you must have the Image Processing Toolbox. It looks like you do not have it and you should please install it before using this program.')
+    set(handles.toolbox_text,'String','You must have the Image Processing Toolbox. You do NOT have it. Please install it before using this program.')
 else
-    disp('The test to check if you have the Image Processing Toolbox is approved.')
+    set(handles.toolbox_text,'String','The test to check if you have the Image Processing Toolbox is APPROVED.')
 end
 
 % --- Executes on button press in LoadData_pushbutton.
@@ -147,7 +147,7 @@ function ROI_pushbutton_Callback(hObject, eventdata, handles)
 
 axes(handles.axes3)
 index = get(handles.listbox3,'value');
-imshow(handles.Con(index).Contrast,[]);%sets axes 3 to selected image that's contrasted
+imshow(handles.Con(index).Contrast,[]); %sets axes 3 to selected image that's contrasted
 
 ROI = drawfreehand; %allows user to draw RIO
 bw = createMask(ROI); %set bw to RIO 
