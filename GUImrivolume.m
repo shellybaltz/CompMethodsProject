@@ -113,10 +113,10 @@ for i = 1:N % for loop to get the info of the images into a structure names mri
     mri(i).images = dicomread(mri(i).info);
 end
 
-handles.mri = mri;      % defines the mri structure
+handles.mri = mri; %defines the mri structure
 
 axes(handles.axes1)
-imshow(handles.mri(1).images,[]);       % shows the first image in axis 1
+imshow(handles.mri(1).images,[]);%shows the first image in axis 1
 guidata(hObject,handles)
 
 % --- Executes on button press in Contrast_pushbutton.
@@ -167,8 +167,10 @@ end
 handles.MaskedIm = MaskedIm; %MaskedIm structure
 
 index = get(handles.listbox3,'value');
+
 axes(handles.axes3)
-imshow(handles.MaskedIm(index).OG,[]); %displays the masked images
+axes(handles.axes4)
+imshow(handles.MaskedIm(index).OG,[]); %displays the masked images in axes 3 an 4
 
 guidata(hObject,handles)
 
@@ -217,30 +219,30 @@ return
 
 
 % --- Executes on slider movement.
-function threshold_slider_Callback(hObject, eventdata, handles)
-% hObject    handle to threshold_slider (see GCBO)
+function slider1_Callback(hObject, eventdata, handles)
+% hObject    handle to slider1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 
-index = get(handles.listbox3,'value');
-axes(handles.axes3)
+index = get(handles.listbox4,'value');
+axes(handles.axes4)
 MaskedIm = handles.MaskedIm;
-thresholdValue = uint8(get(handles.threshold_slider, 'Value'));
+thresholdValue = uint8(get(handles.slider1, 'Value'));
 
 for k = 1:length(MaskedIm) %for loop to black out images
     Thresh(k).Image =  handles.MaskedIm(k).OG > thresholdValue; 
 end
 
 handles.Thresh.Image = Thresh.Image;
-axes(handles.axes3);
+axes(handles.axes4);
 imshow(handles.Thresh(index).Image,[]);
 
 % --- Executes during object creation, after setting all properties.
-function threshold_slider_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to threshold_slider (see GCBO)
+function slider1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to slider1 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    empty - handles not created until after all CreateFcns called
 
@@ -353,6 +355,9 @@ function listbox4_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns listbox4 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from listbox4
+
+index = get(handles.listbox3,'value');
+axes(handles.axes4);
 imshow(handles.Thresh(index).Image,[]);
 
 % --- Executes during object creation, after setting all properties.
