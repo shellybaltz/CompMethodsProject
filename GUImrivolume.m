@@ -148,18 +148,11 @@ imshow(handles.Con(1).Contrast,[]);
 ROI = drawfreehand;
 bw = createMask(ROI);
 
-% OGimage1 = handles.Con(1).Contrast;%setting OGimage to first mri image
-% OGimage1(bw) = 255; %sets masked ROI section above to original mri thresholded image
-% MaskedIm1 = handles.Con(1).Contrast;
-% MaskedIm1(~bw) = 0; %everywhere not masked is set to black
-% imshow(MaskedIm1)
-
-%mri = handles.mri;
 for k = 1:length(handles.mri)
     handles.mri(k).OGimage = handles.Con(k).Contrast;
-    handles.mri(k).OGimage(bw) = 255; % why 255?
+    handles.mri(k).OGimage(bw) = 255; % 255 Represents white pixels, pixels we want to keep
     handles.mri(k).MaskedIm = handles.Con(k).Contrast;
-    handles.mri(k).MaskedIm(~bw) = 0;
+    handles.mri(k).MaskedIm(~bw) = 0; %  0 Blacks out everything not in the ROI
 end
 
 index = get(handles.listbox3,'value');
