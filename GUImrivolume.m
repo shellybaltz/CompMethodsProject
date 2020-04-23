@@ -143,29 +143,34 @@ function ROI_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to ROI_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+axes(handles.axes3)
 imshow(handles.Con(1).Contrast,[]);
 ROI = drawfreehand;
 bw = createMask(ROI);
+
 % OGimage1 = handles.Con(1).Contrast;%setting OGimage to first mri image
 % OGimage1(bw) = 255; %sets masked ROI section above to original mri thresholded image
 % MaskedIm1 = handles.Con(1).Contrast;
 % MaskedIm1(~bw) = 0; %everywhere not masked is set to black
 % imshow(MaskedIm1)
+
 mri = handles.mri;
 for k = 1:length(mri)
-    OGimage(k) = handles.Con(k).Contrast;
-    MaskedIm(k) = handles.Con(k).Contrast;
-     for l = 1:length(OGimage(k))
-        OGimage(bw) = 255;
-        MaskedIm(~bw) = 0;
-     end
+    mri(k).OGimage = handles.Con(k).Contrast;
+    mri(k).OGimage(bw) = 255;
+    mri(k).MaskedIm = handles.Con(k).Contrast;
+    mri(k).MaskedIm(bw) = 0;
+    mri(k).ROI = mri(k).MaskedIm;
+%      for l = 1:length(OGimage(k))
+%         OGimage(bw) = 255;
+%         MaskedIm(~bw) = 0;
+%      end
 end
 
-handles.ROI = MaskedIm(k)
 index = get(handles.listbox3,'value');
-axes(handles.ROI)
 
-imshow(handles.ROI(index).images,[]);
+axes(handles.axes3)
+imshow(handles.mri(index).ROI,[]);
 guidata(hObject,handles)
 
 
@@ -314,7 +319,7 @@ function listbox3_Callback(hObject, eventdata, handles)
 
 index = get(handles.listbox3,'value');
 axes(handles.axes3)
-imshow(handles.ROI(index),[]);
+imshow(handles.mri.ROI(index),[]);
 
 
 % --- Executes during object creation, after setting all properties.
