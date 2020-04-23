@@ -168,8 +168,6 @@ axes(handles.axes3)
 imshow(handles.mri(index).MaskedIm);
 guidata(hObject,handles)
 
-
-
 % --- Executes on button press in Volume_pushbutton.
 function Volume_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to Volume_pushbutton (see GCBO)
