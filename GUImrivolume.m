@@ -85,9 +85,9 @@ function toolboxcheck_pushbutton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 test = license('test','image_toolbox');
 if test == 0
-    set(handles.toolbox_text,'String','You must have the Image Processing Toolbox. You do NOT have it. Please install it before using this program.')
+    set(handles.toolbox_text,'String','Toolbox check: You must have the Image Processing Toolbox. You do NOT have it. Please install it before using this program.')
 else
-    set(handles.toolbox_text,'String','The test to check if you have the Image Processing Toolbox is APPROVED.')
+    set(handles.toolbox_text,'String','Toolbox check: The test to check if you have the Image Processing Toolbox is APPROVED.')
 end
 
 % --- Executes on button press in LoadData_pushbutton.
@@ -173,7 +173,6 @@ axes(handles.axes4)
 imshow(handles.MaskedIm(index).OG,[]); %displays the masked images in axes 3 an 4
 
 guidata(hObject,handles)
-
 
 
 % --- Executes on button press in Volume_pushbutton.
