@@ -85,9 +85,9 @@ function toolboxcheck_pushbutton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 test = license('test','image_toolbox');
 if test == 0
-    disp('To run this project you must have the Image Processing Toolbox. It looks like you do not have it and you should please install it before using this program.')
+    set(handles.toolbox_check,'String','You must have the Image Processing Toolbox. You do NOT have it. Please install it before using this program.')
 else
-    disp('The test to check if you have the Image Processing Toolbox is approved.')
+    set(handles.toolbox_check,'String','The test to check if you have the Image Processing Toolbox is APPROVED.')
 end
 
 % --- Executes on button press in LoadData_pushbutton.
@@ -143,8 +143,11 @@ function ROI_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to ROI_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+index = get(handles.listbox2,'value');
 axes(handles.axes3)
-imshow(handles.Con(1).Contrast,[]);
+imshow(handles.Con(index).Contrast,[]);
+
 ROI = drawfreehand;
 bw = createMask(ROI);
 
@@ -342,3 +345,10 @@ function volume_text_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes during object deletion, before destroying properties.
+function toolboxcheck_textbox_DeleteFcn(hObject, eventdata, handles)
+% hObject    handle to toolboxcheck_textbox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)

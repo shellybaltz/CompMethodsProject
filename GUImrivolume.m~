@@ -85,9 +85,9 @@ function toolboxcheck_pushbutton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 test = license('test','image_toolbox');
 if test == 0
-    disp('To run this project you must have the Image Processing Toolbox. It looks like you do not have it and you should please install it before using this program.')
+    set(handles.toolbox_check,'String','You must have the Image Processing Toolbox. You do NOT have it. Please install it before using this program.')
 else
-    disp('The test to check if you have the Image Processing Toolbox is approved.')
+    set(handles.toolbox_check,'String','The test to check if you have the Image Processing Toolbox is APPROVED.')
 end
 
 % --- Executes on button press in LoadData_pushbutton.
@@ -143,37 +143,26 @@ function ROI_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to ROI_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+index = get(handles.listbox3,'value');
+axes(handles.axes3)
+imshow(handles.C(index).MaskedIm,[]);
 axes(handles.axes3)
 imshow(handles.Con(1).Contrast,[]);
 ROI = drawfreehand;
 bw = createMask(ROI);
 
-% OGimage1 = handles.Con(1).Contrast;%setting OGimage to first mri image
-% OGimage1(bw) = 255; %sets masked ROI section above to original mri thresholded image
-% MaskedIm1 = handles.Con(1).Contrast;
-% MaskedIm1(~bw) = 0; %everywhere not masked is set to black
-% imshow(MaskedIm1)
-
-% mri = handles.mri;
-for k = 1:length(mri)
+for k = 1:length(handles.mri)
     handles.mri(k).OGimage = handles.Con(k).Contrast;
-    handles.mri(k).OGimage(bw) = 255; % why 255?
+    handles.mri(k).OGimage(bw) = 255; % 255 Represents white pixels, pixels we want to keep
     handles.mri(k).MaskedIm = handles.Con(k).Contrast;
-    handles.mri(k).MaskedIm(~bw) = 0;
-%      for l = 1:length(OGimage(k))
-%         OGimage(bw) = 255;
-%         MaskedIm(~bw) = 0;
-%      end
+    handles.mri(k).MaskedIm(~bw) = 0; %  0 Blacks out everything not in the ROI
 end
 
-% handles.mri = mri;
 index = get(handles.listbox3,'value');
 
 axes(handles.axes3)
-imshow(handles.mri(index).Mas,[]);
+imshow(handles.mri(index).MaskedIm);
 guidata(hObject,handles)
-
-
 
 % --- Executes on button press in Volume_pushbutton.
 function Volume_pushbutton_Callback(hObject, eventdata, handles)
@@ -319,7 +308,7 @@ function listbox3_Callback(hObject, eventdata, handles)
 
 index = get(handles.listbox3,'value');
 axes(handles.axes3)
-imshow(handles.mri(index).ROI,[]);
+imshow(handles.mri(index).MaskedIm,[]);
 
 
 % --- Executes during object creation, after setting all properties.
@@ -356,3 +345,10 @@ function volume_text_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+% --- Executes during object deletion, before destroying properties.
+function toolboxcheck_textbox_DeleteFcn(hObject, eventdata, handles)
+% hObject    handle to toolboxcheck_textbox (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
