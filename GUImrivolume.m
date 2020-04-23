@@ -85,9 +85,9 @@ function toolboxcheck_pushbutton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 test = license('test','image_toolbox');
 if test == 0
-    set(handles.toolbox_check,'String','You must have the Image Processing Toolbox. You do NOT have it. Please install it before using this program.')
+    disp('To run this project you must have the Image Processing Toolbox. It looks like you do not have it and you should please install it before using this program.')
 else
-    set(handles.toolbox_check,'String','The test to check if you have the Image Processing Toolbox is APPROVED.')
+    disp('The test to check if you have the Image Processing Toolbox is approved.')
 end
 
 % --- Executes on button press in LoadData_pushbutton.
@@ -98,16 +98,17 @@ function LoadData_pushbutton_Callback(hObject, eventdata, handles)
 
 [filename,filepath] = uigetfile('*.dcm', 'Select all the MRI images to be analyzed','Multiselect', 'on');
 
-if ~iscell(filename)    % checks if user only selected one file. If so, filename will be put in a cell.
+if ~iscell(filename)    %checks if user only selected one file. If so, filename will be put in a cell.
     filename = {filename};
 end 
 
-N = length(filename);   % Makes N the number of files the user selected
+N = length(filename);   %Makes N the number of files the user selected
 set(handles.listbox1,'String',filename); 
 set(handles.listbox2,'String',filename);
 set(handles.listbox3,'String',filename);
+set(handles.listbox4,'String',filename);
 
-for i = 1:N             % for loop to get the info of the images into a structure names mri
+for i = 1:N % for loop to get the info of the images into a structure names mri
     mri(i).info = dicominfo(filename{i});
     mri(i).images = dicomread(mri(i).info);
 end
@@ -129,7 +130,7 @@ for k = 1:length(mri) %for loop to contrast loaded images
     Con(k).Contrast = imadjustn(mri(k).images); 
 end
 
-handles.Con = Con; %handle on contrasted images
+handles.Con = Con; %Con structure
 index = get(handles.listbox2,'value');  %index (what the user selects)
 
 axes(handles.axes2) %axes 2
@@ -144,25 +145,34 @@ function ROI_pushbutton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
-index = get(handles.listbox2,'value');
 axes(handles.axes3)
-imshow(handles.Con(index).Contrast,[]);
+index = get(handles.listbox3,'value');
+imshow(handles.Con(index).Contrast,[]);%sets axes 3 to selected image that's contrasted
 
-ROI = drawfreehand;
-bw = createMask(ROI);
+ROI = drawfreehand; %allows user to draw RIO
+bw = createMask(ROI); %set bw to RIO 
 
-for k = 1:length(handles.mri)
-    handles.mri(k).OGimage = handles.Con(k).Contrast;
-    handles.mri(k).OGimage(bw) = 255; % 255 Represents white pixels, pixels we want to keep
-    handles.mri(k).MaskedIm = handles.Con(k).Contrast;
-    handles.mri(k).MaskedIm(~bw) = 0; %  0 Blacks out everything not in the ROI
+Con = handles.Con; %handle on contrasted image
+
+for l = 1:length(Con) %for loop to set contrasted images to OG and Masked
+OGimage(l).OG = handles.Con(l).Contrast; %sets images to contrasted
+MaskedIm(l).OG = handles.Con(l).Contrast; %sets images to contrasted
 end
 
-index = get(handles.listbox3,'value');
+for k = 1:length(Con) %for loop to black out images
+OGimage(k).OG(bw) = 225;%keeps what user selected
+MaskedIm(k).OG(~bw) = 0;%blacks out what user didn't select
+end
 
+handles.MaskedIm = MaskedIm; %MaskedIm structure
+
+index = get(handles.listbox3,'value');
 axes(handles.axes3)
-imshow(handles.mri(index).MaskedIm);
+imshow(handles.MaskedIm(index).OG,[]); %displays the masked images
+
 guidata(hObject,handles)
+
+
 
 % --- Executes on button press in Volume_pushbutton.
 function Volume_pushbutton_Callback(hObject, eventdata, handles)
@@ -238,6 +248,18 @@ function threshold_slider_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 
+index = get(handles.listbox3,'value');
+axes(handles.axes3)
+MaskedIm = handles.MaskedIm;
+thresholdValue = uint8(get(handles.threshold_slider, 'Value'));
+
+for k = 1:length(MaskedIm) %for loop to black out images
+    Thresh(k).Image =  handles.MaskedIm(k).OG > thresholdValue; 
+end
+
+handles.Thresh.Image = Thresh.Image;
+axes(handles.axes3);
+imshow(handles.Thresh(index).Image,[]);
 
 % --- Executes during object creation, after setting all properties.
 function threshold_slider_CreateFcn(hObject, eventdata, handles)
@@ -308,8 +330,7 @@ function listbox3_Callback(hObject, eventdata, handles)
 
 index = get(handles.listbox3,'value');
 axes(handles.axes3)
-imshow(handles.mri(index).MaskedIm,[]);
-
+imshow(handles.MaskedIm(index).OG,[]); %displays the masked images
 
 % --- Executes during object creation, after setting all properties.
 function listbox3_CreateFcn(hObject, eventdata, handles)
@@ -347,8 +368,24 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes during object deletion, before destroying properties.
-function toolboxcheck_textbox_DeleteFcn(hObject, eventdata, handles)
-% hObject    handle to toolboxcheck_textbox (see GCBO)
+% --- Executes on selection change in listbox4.
+function listbox4_Callback(hObject, eventdata, handles)
+% hObject    handle to listbox4 (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+% Hints: contents = cellstr(get(hObject,'String')) returns listbox4 contents as cell array
+%        contents{get(hObject,'Value')} returns selected item from listbox4
+imshow(handles.Thresh(index).Image,[]);
+
+% --- Executes during object creation, after setting all properties.
+function listbox4_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to listbox4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: listbox controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
