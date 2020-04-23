@@ -125,16 +125,16 @@ function Contrast_pushbutton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 mri = handles.mri;
-for k = 1:length(mri)
+for k = 1:length(mri) %for loop to contrast loaded images
     Con(k).Contrast = imadjustn(mri(k).images); 
 end
 
-handles.Con = Con;
-index = get(handles.listbox2,'value');   
+handles.Con = Con; %handle on contrasted images
+index = get(handles.listbox2,'value');  %index (what the user selects)
 
-axes(handles.axes2)
+axes(handles.axes2) %axes 2
 
-imshow(handles.Con(index).Contrast,[]);
+imshow(handles.Con(index).Contrast,[]);%shows selected contrasted images on axes 2
 guidata(hObject,handles)
 
 
@@ -291,9 +291,9 @@ function listbox2_Callback(hObject, eventdata, handles)
 
 % Hints: contents = cellstr(get(hObject,'String')) returns listbox2 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from listbox2
-index = get(handles.listbox2,'value');
-axes(handles.axes2)
-imshow(handles.Con(index).Contrast,[]);
+index = get(handles.listbox2,'value'); %gets index (what image to show) that user selects
+axes(handles.axes2) %axes 2
+imshow(handles.Con(index).Contrast,[]); %shows contrasted images on axes 2
 
 
 % --- Executes during object creation, after setting all properties.
