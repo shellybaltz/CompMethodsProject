@@ -154,18 +154,23 @@ bw = createMask(ROI);
 % MaskedIm1(~bw) = 0; %everywhere not masked is set to black
 % imshow(MaskedIm1)
 
-%mri = handles.mri;
-for k = 1:length(handles.mri)
+% mri = handles.mri;
+for k = 1:length(mri)
     handles.mri(k).OGimage = handles.Con(k).Contrast;
     handles.mri(k).OGimage(bw) = 255; % why 255?
     handles.mri(k).MaskedIm = handles.Con(k).Contrast;
     handles.mri(k).MaskedIm(~bw) = 0;
+%      for l = 1:length(OGimage(k))
+%         OGimage(bw) = 255;
+%         MaskedIm(~bw) = 0;
+%      end
 end
 
+% handles.mri = mri;
 index = get(handles.listbox3,'value');
 
 axes(handles.axes3)
-imshow(handles.mri(index).MaskedIm);
+imshow(handles.mri(index).Mas,[]);
 guidata(hObject,handles)
 
 
@@ -314,7 +319,7 @@ function listbox3_Callback(hObject, eventdata, handles)
 
 index = get(handles.listbox3,'value');
 axes(handles.axes3)
-imshow(handles.mri(index).MaskedIm,[]);
+imshow(handles.mri(index).ROI,[]);
 
 
 % --- Executes during object creation, after setting all properties.
