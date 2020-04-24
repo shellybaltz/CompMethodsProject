@@ -146,7 +146,7 @@ function ROI_pushbutton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 axes(handles.axes3)
-index = get(handles.listbox3,'value');
+index = get(handles.listbox3,'value');  %index = user selection
 imshow(handles.Con(index).Contrast,[]); %sets axes 3 to selected image that's contrasted
 
 ROI = drawfreehand; %allows user to draw RIO
@@ -165,11 +165,10 @@ MaskedIm(k).OG(~bw) = 0;%blacks out what user didn't select
 end
 
 handles.MaskedIm = MaskedIm; %MaskedIm structure
+index = get(handles.listbox3,'value'); %index = user selection
 
-index = get(handles.listbox3,'value');
-
-axes(handles.axes3)
-axes(handles.axes4)
+axes(handles.axes3) %shows images in axes 3 
+axes(handles.axes4) %Shows images in axes 4
 imshow(handles.MaskedIm(index).OG,[]); %displays the masked images in axes 3 an 4
 
 guidata(hObject,handles)
@@ -226,13 +225,24 @@ function slider1_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 
-index = get(handles.listbox4,'value');
-axes(handles.axes4)
-MaskedIm = handles.MaskedIm;
-thresholdValue = uint8(get(handles.slider1, 'Value'));
+index = get(handles.listbox4,'value'); %index  = user selection
+axes(handles.axes4)%calls axes 4
+MaskedIm = handles.MaskedIm.OG; %displayes masked images in axes 4 
 
-for k = 1:length(MaskedIm) %for loop to black out images
-    Thresh(k).Image =  handles.MaskedIm(k).OG > thresholdValue; 
+a = handles.slider1.Value; %gets slider value 
+Thresh.Image = handles.MaskedIm.OG;
+[sz_1,sz_2] = size(handles.MaskedIm(index).OG); %finds size of MRI image
+
+for c = 1:(length(MaskedIm))
+    for k = 1:sz_2
+        for j = 1:sz_1
+            if handles.MaskedIm(c).OG(j,k) > a
+                Thresh(c).Image(j,k) = handles.MaskedIm(c).OG(j,k); %sets vector equal to ablation pixel value
+            else
+                Thresh(c).Image(j,k) = 0; %everything but ablation pixels = 0
+            end
+        end
+    end
 end
 
 handles.Thresh.Image = Thresh.Image;
@@ -355,7 +365,7 @@ function listbox4_Callback(hObject, eventdata, handles)
 % Hints: contents = cellstr(get(hObject,'String')) returns listbox4 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from listbox4
 
-index = get(handles.listbox3,'value');
+index = get(handles.listbox4,'value');
 axes(handles.axes4);
 imshow(handles.Thresh(index).Image,[]);
 
