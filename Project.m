@@ -118,9 +118,9 @@ title('Ablation Area in MRI Image 4')
 
 %adjust pixel number to be user input/slider
 ab1 = zeros(368,512); %initializing vector
-for k = 1:512;
-    for j = 1:368;
-        if MaskedIm1(j,k) > 60000; %finds when image is greater than 60,000 (ablation pixel values)
+for k = 1:512
+    for j = 1:368
+        if MaskedIm1(j,k) > 60000 %finds when image is greater than 60,000 (ablation pixel values)
             ab1(j,k) = MaskedIm1(j,k); %sets vector equal to ablation pixel value
         else
             ab1(j,k) = 0; %everything but ablation pixels = 0
