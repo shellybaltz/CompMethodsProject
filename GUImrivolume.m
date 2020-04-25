@@ -376,7 +376,7 @@ function listbox4_Callback(hObject, eventdata, handles)
 % Hints: contents = cellstr(get(hObject,'String')) returns listbox4 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from listbox4
 
-index = get(handles.listbox3,'value');
+index = get(handles.listbox4,'value');
 axes(handles.axes4);
 imshow(handles.Thresh(index).ab,[]);
 
