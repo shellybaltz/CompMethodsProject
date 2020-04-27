@@ -146,25 +146,25 @@ function ROI_pushbutton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 axes(handles.axes3)
-index = get(handles.listbox3,'value');
-imshow(handles.Con(index).Contrast,[]); %sets axes 3 to selected image that's contrasted
+index = get(handles.listbox2,'value');
+imshow(handles.Con(index).Contrast,[]); %sets axes 3 to selected image that's contrasted from axes2
 
 ROI = drawfreehand; %allows user to draw RIO
 bw = createMask(ROI); %set bw to RIO 
 
 Con = handles.Con; %handle on contrasted image
 
-for l = 1:length(Con) %for loop to set contrasted images to OG and Masked
-OGimage(l).OG = handles.Con(l).Contrast; %sets images to contrasted
-MaskedIm(l).OG = handles.Con(l).Contrast; %sets images to contrasted
+for l = 1:length(Con)           % for loop to set contrasted images to OG and Masked
+    OGimage(l).OG = handles.Con(l).Contrast;  % sets images to contrasted
+    MaskedIm(l).OG = handles.Con(l).Contrast; % sets images to contrasted
 end
 
-for k = 1:length(Con) %for loop to black out images
-OGimage(k).OG(bw) = 225;%keeps what user selected
-MaskedIm(k).OG(~bw) = 0;%blacks out what user didn't select
+for k = 1:length(Con)           % for loop to black out images
+    OGimage(k).OG(bw) = 225;    % keeps what user selected
+    MaskedIm(k).OG(~bw) = 0;    % blacks out what user didn't select
 end
 
-handles.MaskedIm = MaskedIm; %MaskedIm structure
+handles.MaskedIm = MaskedIm;    % MaskedIm structure
 
 index = get(handles.listbox3,'value');
 
@@ -180,6 +180,24 @@ function Volume_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to Volume_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
+mri = handles.mri;
+spacing = mri(1).info.PixelSpacing;
+thickness = mri(1).info.SliceThickness;
+pixelArea = spacing(1) * spacing(2)
+pixelVolume = pixelArea * thickness
+
+Thresh = handles.Thresh;
+
+for i = 1:length(Thresh)
+    pixels(i) = nnz(Thresh(i))
+    vol(i) = pixels(i) * pixelVolume
+    volumeTotal = sum(vol)
+end
+
+handles.Volume = volumeTotal
+  guidata(hObject,handles);
+    
 
 
 % --- Executes on button press in ROIthreshold_pushbutton.
@@ -228,34 +246,37 @@ function slider1_Callback(hObject, eventdata, handles)
 
 set(handles.slider1, 'min', 50000);
 set(handles.slider1, 'max', 70000);
-set(handles.slider1, 'Value', 60000); % Somewhere between max and min.
+%set(handles.slider1, 'Value', 60000); % Somewhere between max and min.
+set(handles.slider1, 'SliderStep', [1/7 , 10/70]);
 
 index = get(handles.listbox4,'value'); %index  = user selection
 a = get(hObject, 'Value'); %gets slider value 
 [sz_1,sz_2] = size(handles.MaskedIm(index).OG); %finds size of MRI image
-%Con = handles.Con; %handle on contrasted image
+Con = handles.Con; %handle on contrasted image
 
-% for t = 1:length(Con)
-Thresh(index).ab = zeros(sz_1,sz_2);
-%     Thresh(t).Image = handles.MaskedIm(t);
-% end
 
-for k = 1:sz_2
-    for j = 1:sz_1
-        if handles.MaskedIm(index).OG(j,k) > a
-           Thresh(index).ab(j,k) = handles.MaskedIm(c).OG(j,k) %sets vector equal to ablation pixel value
-        else
-           Thresh(index).ab(j,k) = Thresh.ab(j,k) %everything but ablation pixels = 0
+
+for c = 1:length(Con)
+    Thresh(c).ab = zeros(sz_1,sz_2);
+    for k = 1:sz_2
+        for j = 1:sz_1
+            if handles.MaskedIm(c).OG(j,k) > a
+               Thresh(c).ab(j,k) = handles.MaskedIm(c).OG(j,k); %sets vector equal to ablation pixel value
+            else
+               Thresh(c).ab(j,k) = 0;  %everything but ablation pixels = 0
+            end
         end
     end
 end
 
 handles.Thresh = Thresh;
-index = get(handles.listbox4,'value'); %index  = user selection
-axes(handles.axes4);
-imshow(handles.Thresh(index).Image,[]);
-guidata(hObject,handles)
+%index = get(handles.listbox4,'value'); %index  = user selection
+caption = sprintf('Slider value = %.3f', a);
+set(handles.slider_text, 'String', caption);
 
+axes(handles.axes4);
+imshow(handles.Thresh(index).ab,[]);
+guidata(hObject,handles)
 
 % --- Executes during object creation, after setting all properties.
 function slider1_CreateFcn(hObject, eventdata, handles)
@@ -349,6 +370,9 @@ function volume_text_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of volume_text as text
 %        str2double(get(hObject,'String')) returns contents of volume_text as a double
+volumeTotal = handles.Volume;
+set(handles.volume_text,volumeTotal)
+disp(volumeTotal)
 
 
 % --- Executes during object creation, after setting all properties.
@@ -373,9 +397,9 @@ function listbox4_Callback(hObject, eventdata, handles)
 % Hints: contents = cellstr(get(hObject,'String')) returns listbox4 contents as cell array
 %        contents{get(hObject,'Value')} returns selected item from listbox4
 
-index = get(handles.listbox3,'value');
+index = get(handles.listbox4,'value');
 axes(handles.axes4);
-imshow(handles.Thresh(index).Image,[]);
+imshow(handles.Thresh(index).ab,[]);
 
 % --- Executes during object creation, after setting all properties.
 function listbox4_CreateFcn(hObject, eventdata, handles)
@@ -388,10 +412,3 @@ function listbox4_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
-% --- Executes on button press in threshold_pushbutton.
-function threshold_pushbutton_Callback(hObject, eventdata, handles)
-% hObject    handle to threshold_pushbutton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)

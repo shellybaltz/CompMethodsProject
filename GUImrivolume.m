@@ -181,6 +181,24 @@ function Volume_pushbutton_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 
+mri = handles.mri;
+spacing = mri(1).info.PixelSpacing;
+thickness = mri(1).info.SliceThickness;
+pixelArea = spacing(1) * spacing(2);
+pixelVolume = pixelArea * thickness;
+
+Thresh = handles.Thresh;
+
+for i = 1:length(Thresh)
+    pixels(i) = nnz(Thresh(i).ab);
+    vol(i) = pixels(i) * pixelVolume;
+    volumeTotal = sum(vol);
+end
+
+handles.Volume = volumeTotal
+  guidata(hObject,handles);
+    
+
 
 % --- Executes on button press in ROIthreshold_pushbutton.
 function ROIthreshold_pushbutton_Callback(hObject, eventdata, handles)
@@ -352,6 +370,9 @@ function volume_text_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'String') returns contents of volume_text as text
 %        str2double(get(hObject,'String')) returns contents of volume_text as a double
+volumeTotal = handles.Volume;
+set(handles.volume_text,volumeTotal)
+disp(volumeTotal)
 
 
 % --- Executes during object creation, after setting all properties.
