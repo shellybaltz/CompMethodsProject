@@ -182,17 +182,17 @@ function Volume_pushbutton_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 
 mri = handles.mri;
-spacing = mri(1).info.PixelSpacing;
+spacing = mri(1).info.PixelSpacing; % extract measurements of the mri data in mm
 thickness = mri(1).info.SliceThickness;
-pixelArea = spacing(1) * spacing(2);
+pixelArea = spacing(1) * spacing(2); % calculating area then volume per pixel
 pixelVolume = pixelArea * thickness;
 
 Thresh = handles.Thresh;
 
 for i = 1:length(Thresh)
-    pixels(i) = nnz(Thresh(i).ab);
+    pixels(i) = nnz(Thresh(i).ab); % counting non-zero pixels of the threshhold image and multiplying it by volume per pixel
     vol(i) = pixels(i) * pixelVolume;
-    volumeTotal = sum(vol);
+    volumeTotal = sum(vol); % summing the volumes of all images
 end
 
 handles.Volume = volumeTotal;
