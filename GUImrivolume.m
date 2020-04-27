@@ -195,7 +195,7 @@ for i = 1:length(Thresh)
     volumeTotal = sum(vol);
 end
 
-handles.Volume = volumeTotal
+handles.Volume = volumeTotal;
   guidata(hObject,handles);
     
 
