@@ -202,12 +202,6 @@ volumetext = sprintf('%.3f mm^3', volumeTotal);
 set(handles.volume_text, 'String', volumetext);
 guidata(hObject,handles);
 
-% --- Executes on button press in ROIthreshold_pushbutton.
-function ROIthreshold_pushbutton_Callback(hObject, eventdata, handles)
-% hObject    handle to ROIthreshold_pushbutton (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
 
 % --- Executes on selection change in listbox1.
 function listbox1_Callback(hObject, eventdata, handles)
