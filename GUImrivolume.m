@@ -144,6 +144,7 @@ function ROI_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to ROI_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+
 set(handles.ROIrules_text, 'Visible', 'on');
 axes(handles.axes3)
 index = get(handles.listbox2,'value');
@@ -174,6 +175,7 @@ imshow(handles.MaskedIm(index).OG,[]); %displays the masked images in axes 3 an 
 
 guidata(hObject,handles)
 
+set(handles.sliderRule_text, 'Visible', 'on');
 
 % --- Executes on button press in Volume_pushbutton.
 function Volume_pushbutton_Callback(hObject, eventdata, handles)
@@ -244,7 +246,6 @@ function slider1_Callback(hObject, eventdata, handles)
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 
-set(handles.sliderRule_text, 'Visible', 'on');
 
 set(handles.slider1, 'min', 50000);
 set(handles.slider1, 'max', 70000);
@@ -362,33 +363,6 @@ function listbox3_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
-
-
-
-function volume_text_Callback(hObject, eventdata, handles)
-% hObject    handle to volume_text (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-
-% Hints: get(hObject,'String') returns contents of volume_text as text
-%        str2double(get(hObject,'String')) returns contents of volume_text as a double
-volumeTotal = handles.Volume;
-set(handles.volume_text,volumeTotal)
-disp(volumeTotal)
-
-
-% --- Executes during object creation, after setting all properties.
-function volume_text_CreateFcn(hObject, eventdata, handles)
-% hObject    handle to volume_text (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    empty - handles not created until after all CreateFcns called
-
-% Hint: edit controls usually have a white background on Windows.
-%       See ISPC and COMPUTER.
-if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor','white');
-end
-
 
 % --- Executes on selection change in listbox4.
 function listbox4_Callback(hObject, eventdata, handles)
