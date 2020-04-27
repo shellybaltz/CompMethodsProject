@@ -268,7 +268,7 @@ end
 
 handles.Thresh = Thresh;
 %index = get(handles.listbox4,'value'); %index  = user selection
-caption = sprintf('Slider value = %.3f', a);
+caption = sprintf('Threshold Percentage  = %.3f', ((a/70000).*100));
 set(handles.slider_text, 'String', caption);
 
 axes(handles.axes4);
