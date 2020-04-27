@@ -144,7 +144,7 @@ function ROI_pushbutton_Callback(hObject, eventdata, handles)
 % hObject    handle to ROI_pushbutton (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-
+set(handles.ROIrules_text, 'Visible', 'on');
 axes(handles.axes3)
 index = get(handles.listbox2,'value');
 imshow(handles.Con(index).Contrast,[]); %sets axes 3 to selected image that's contrasted from axes2
@@ -184,21 +184,21 @@ function Volume_pushbutton_Callback(hObject, eventdata, handles)
 mri = handles.mri;
 spacing = mri(1).info.PixelSpacing;
 thickness = mri(1).info.SliceThickness;
-pixelArea = spacing(1) * spacing(2)
-pixelVolume = pixelArea * thickness
+pixelArea = spacing(1) * spacing(2);
+pixelVolume = pixelArea * thickness;
 
 Thresh = handles.Thresh;
 
 for i = 1:length(Thresh)
-    pixels(i) = nnz(Thresh(i))
-    vol(i) = pixels(i) * pixelVolume
-    volumeTotal = sum(vol)
+    pixels(i) = nnz(Thresh(i).ab);
+    vol(i) = pixels(i) * pixelVolume;
+    volumeTotal = sum(vol);
 end
 
-handles.Volume = volumeTotal
-  guidata(hObject,handles);
-    
-
+handles.Volume = volumeTotal;
+volumetext = sprintf('%.3f mm^3', volumeTotal);
+set(handles.volume_text, 'String', volumetext);
+guidata(hObject,handles);
 
 % --- Executes on button press in ROIthreshold_pushbutton.
 function ROIthreshold_pushbutton_Callback(hObject, eventdata, handles)
@@ -243,6 +243,13 @@ function slider1_Callback(hObject, eventdata, handles)
 
 % Hints: get(hObject,'Value') returns position of slider
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
+sli = get(handles.checkbox1, 'value')
+if checkboxValue
+  set(handles.text1, 'Visible', 'on');
+else
+  set(handles.text1, 'Visible', 'off');
+end
+
 
 set(handles.slider1, 'min', 50000);
 set(handles.slider1, 'max', 70000);
